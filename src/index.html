@@ -2,6 +2,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Github-browser</title>
+  <script>
+    /** Load polyfill bundle if it is IE11 or some other old browser */
+    const modernBrowser = (
+      'fetch' in window
+      && 'assing' in Object
+    );
+
+    if (!modernBrowser) {
+      const scriptElement = document.createElement('script');
+
+      scriptElement.async = false;
+      scriptElement.src = '/assets/js/polyfills.bundle.js';
+      document.head.appendChild(scriptElement);
+    }
+  </script>
 </head>
 <body>
 
