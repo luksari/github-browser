@@ -1,6 +1,7 @@
 import { DataModel } from "../models/DataModel";
 import { FormView } from "../views/FormView";
 import { ProfileView } from "../views/ProfileView";
+import { GithubApi } from "../api/GithubApi";
 
 export class AppController {
   constructor() {
@@ -13,7 +14,7 @@ export class AppController {
     this.model.bindProfileChanged(this.onProfileChanged);
   }
 
-  onProfileChanged =(profile) => {
+  onProfileChanged = (profile) => {
     this.profileView.updateProfile(profile);
   }
 
@@ -24,8 +25,8 @@ export class AppController {
 
   fetchProfile = async (name) => {
     try {
-      const data = await fetch(`https://api.github.com/users/${name}`);
-      return data.json();
+      const data = await GithubApi.getUserProfile(name);
+      return data;
     } catch (error) {
       console.error(error);
     }

@@ -7,14 +7,14 @@ export class ProfileView {
     * map to message 'There is no user called {name}'
     * that is called async validation :)
     */
-    if(!this.profile) {
+    if(!profile) {
       this._updateToMockedProfile();
       return;
     }
 
     $('#profile-name').text($('#gh-username').val())
     $('#profile-image').attr('src', profile.avatar_url)
-    $('#profile-url').attr('href', profile.html_url).text(profile.login)
+    $('#profile-url').attr('href', profile.html_url).text(`@${profile.login}`)
     $('#profile-bio').text(profile.bio || '(No information)')
   }
 
