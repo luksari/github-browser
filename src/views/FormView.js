@@ -1,33 +1,39 @@
 import $ from 'cash-dom';
 import { isNotEmpty, isValidName } from '../utils/validators';
 
-export class FormModule {
+export class FormView {
   constructor() {
+    this.userName = '';
     this.error = '';
-    this.name = '';
+
+    this.handleInputChange();
+    /** Initialy validate input */
+    this.validateInput();
   }
 
-  initializeModule() {
-    this.initializeListeners();
-  }
+  setUsername(name) {
+    this.userName = name;
+  } 
 
-  initializeListeners() {
+  handleInputChange() {
     $('#gh-username').on('input', (e) => {
-      this.name = e.target.value;
+      this.setUsername(e.target.value);
       this.validateInput();
     });
-    $('#gh-form').on('submit', (e) => {
-      console.log(e);
-      e.preventDefault();
-      this.validateInput();
-    })
   }
 
+  onFormSubmit(handler) {
+    $('#gh-form').on('submit', async (e) => {
+      e.preventDefault();
+      await handler(this.userName);
+    })
+  }
+  
   validateInput() {
-    if (!isNotEmpty(this.name)) {
+    if (!isNotEmpty(this.userName)) {
       this.error = 'The username should not be empty';
       this.showError();
-    } else if (!isValidName(this.name)) {
+    } else if (!isValidName(this.userName)) {
       /** Sorry didn't have idea for better message */
       this.error = `The username should contain only characters 'a-z', '0-9', '-', '_'`;
       this.showError();
@@ -41,7 +47,6 @@ export class FormModule {
     $('#gh-username').addClass('is-danger');
     $('#gh-form-button').attr('disabled', true);
     $('#gh-form-error').text(this.error);
-
   }
 
   hideError() {
