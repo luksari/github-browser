@@ -22,18 +22,22 @@
 
 <nav class="navbar">
   <div class="navbar-brand">
-    <div class="navbar-item">
+    <form id='gh-form' name='gh-form' class="navbar-item field is-horizontal">
+      <div class="field-label">
+        <label class="label" for='gh-username'>Github Username</label>
+      </div>
       <div class="field has-addons">
         <div class="control">
           <input class="input username" id='gh-username' name='gh-username'  type="text" placeholder="Enter github username...">
+          <span id='gh-form-error' class="help is-danger"></span>
         </div>
         <div class="control">
-          <button class="button is-info load-username">
+          <button id='gh-form-button'type="submit" class="button is-info load-username">
             Load
           </button>
         </div>
       </div>
-    </div>
+    </form>
 
     <div class="navbar-item">
       <div class="loader is-hidden" id="spinner"></div>
