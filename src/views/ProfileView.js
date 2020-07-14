@@ -2,6 +2,7 @@ import $ from 'cash-dom';
 
 export class ProfileView {
   updateProfile(profile) {
+    $('#gh-profile').removeClass('is-hidden');
    /** 
     * To be honest I should have thrown exception that would
     * map to message 'There is no user called {name}'
@@ -16,6 +17,10 @@ export class ProfileView {
     $('#profile-image').attr('src', profile.avatar_url)
     $('#profile-url').attr('href', profile.html_url).text(`@${profile.login}`)
     $('#profile-bio').text(profile.bio || '(No information)')
+  }
+
+  hideProfile() {
+    $('#gh-profile').addClass('is-hidden');
   }
 
   _updateToMockedProfile() {
