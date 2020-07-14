@@ -1,5 +1,5 @@
 import { filterEvent, mapEvent } from "../domain/events/utils";
-import { orderBy } from "lodash";
+import { orderBy }from "lodash";
 
 export class DataModel {
   constructor() {

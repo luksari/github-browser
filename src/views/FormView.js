@@ -23,9 +23,10 @@ export class FormView {
   }
 
   onFormSubmit(handler) {
-    $('#gh-form').on('submit', async (e) => {
+    $('#gh-form-button').on('click', async (e) => {
       e.preventDefault();
       await handler(this.userName);
+      return false;
     })
   }
   
