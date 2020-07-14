@@ -106,6 +106,8 @@ const config = {
     open: true
   },
 
+  devtool: 'inline-source-map',
+
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
