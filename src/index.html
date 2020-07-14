@@ -2,23 +2,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Github-browser</title>
+  <script>
+    /** Load polyfill bundle if it is IE11 or some other old browser */
+    const modernBrowser = (
+      'fetch' in window
+      && 'assing' in Object
+    );
+
+    if (!modernBrowser) {
+      const scriptElement = document.createElement('script');
+
+      scriptElement.async = false;
+      scriptElement.src = '/assets/js/polyfills.bundle.js';
+      document.head.appendChild(scriptElement);
+    }
+  </script>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="navbar-brand">
-    <div class="navbar-item">
+    <form id='gh-form' name='gh-form' class="navbar-item field is-horizontal" onsubmit="return false">
+      <div class="field-label">
+        <label class="label" for='gh-username'>Github Username</label>
+      </div>
       <div class="field has-addons">
         <div class="control">
-          <input class="input username" type="text" placeholder="enter github username">
+          <input class="input username" id='gh-username' name='gh-username'  type="text" placeholder="Enter github username...">
+          <span id='gh-form-error' class="help is-danger"></span>
         </div>
         <div class="control">
-          <button class="button is-info load-username">
+          <button id='gh-form-button'type="button" class="button is-info load-username">
             Load
           </button>
         </div>
       </div>
-    </div>
+    </form>
 
     <div class="navbar-item">
       <div class="loader is-hidden" id="spinner"></div>
@@ -29,12 +48,12 @@
 
 
 <div class="container">
-  <div class="columns is-1-tablet">
-    <div class="profile-container column is-one-third">
+  <div class="columns-container">
+    <div class="profile-container">
 
       <h2 class="subtitle is-4">Profile</h2>
 
-      <div class="profile">
+      <div class="profile" id='gh-profile'>
         <div class="media">
           <div class="media-left">
             <figure class="media-left image is-64x64">
@@ -55,7 +74,7 @@
       </div>
     </div>
 
-    <div class="events-container column">
+    <div class="events-container">
       <h2 class="subtitle is-4">History</h2>
 
       <div class="timeline" id="user-timeline">
@@ -65,10 +84,10 @@
           <div class="timeline-content">
             <p class="heading">Jan 21, 2016</p>
             <div class="content">
-                  <span class="gh-username">
-                    <img src="https://avatars.githubusercontent.com/u/2310778?"/>
-                    <a href="https://github.com/sethii">sethii</a>
-                  </span>
+              <span class="gh-username">
+                <img class='gh-user-image' src="https://avatars.githubusercontent.com/u/2310778?"/>
+                <a href="https://github.com/sethii">sethii</a>
+              </sppan>
               closed
               <a href="https://github.com/TheSoftwareHouse/Kakunin/pull/41">pull request</a>
               <p class="repo-name">
@@ -83,10 +102,10 @@
           <div class="timeline-content">
             <p class="heading">Jan 19, 2016</p>
             <div class="content">
-                <span class="gh-username">
-                  <img src="https://avatars.githubusercontent.com/u/1208786?"/>
-                  <a href="https://github.com/simonsipl">gajdus</a>
-                </span>
+              <span class="gh-username">
+                <img class='gh-user-image' src="https://avatars.githubusercontent.com/u/1208786?"/>
+                <a href="https://github.com/simonsipl">gajdus</a>
+              </span>
               created
               <a href="https://github.com/TheSoftwareHouse/Kakunin/pull/41#discussion_r176273897">comment</a>
               to
@@ -103,10 +122,10 @@
           <div class="timeline-content">
             <p class="heading">Jan 19, 2016</p>
             <div class="content">
-                <span class="gh-username">
-                  <img src="https://avatars.githubusercontent.com/u/2310778"/>
-                  <a href="https://github.com/aherok">sethii</a>
-                </span>
+              <span class="gh-username">
+                <img class='gh-user-image' src="https://avatars.githubusercontent.com/u/2310778"/>
+                <a href="https://github.com/aherok">sethii</a>
+              </span>
               opened
               <a href="https://github.com/TheSoftwareHouse/Kakunin/pull/41">pull request</a>
               <p class="repo-name">

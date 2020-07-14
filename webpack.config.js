@@ -1,22 +1,30 @@
-const path = require('path'),
-  webpack = require('webpack'),
-  CleanWebpackPlugin = require('clean-webpack-plugin'),
-  HtmlWebpackPlugin = require('html-webpack-plugin'),
-  ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const extractPlugin = new ExtractTextPlugin({filename: './assets/css/app.css'});
+const TerserPlugin = require('terser-webpack-plugin');
 
 const config = {
 
   context: path.resolve(__dirname, 'src'),
 
   entry: {
+    polyfills: './polyfills.js',
     app: './index.js'
   },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: './assets/js/[name].bundle.js'
+  },
+
+  resolve: {
+    alias: {
+      'lodash-es': 'lodash',
+    },
   },
 
   module: {
@@ -29,7 +37,22 @@ const config = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['env']
+            plugins: [
+              "@babel/plugin-transform-spread", 
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-transform-runtime",
+              "lodash"
+            ],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  "targets": {
+                    "browsers": [ "last 1 version", "ie >= 11" ]
+                  }
+              }
+              ],
+            ]
           }
         }
       },
@@ -39,22 +62,13 @@ const config = {
       },
       {
         test: /\.s?css$/,
-        use: extractPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true
-              }
-            }, {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: true
-              }
-            }
-          ],
-          fallback: 'style-loader'
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(jpg|png|gif|svg)$/,
@@ -77,9 +91,12 @@ const config = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin({ cleanAfterEveryBuildPatterns: ['dist']}),
     new HtmlWebpackPlugin({template: 'index.html'}),
-    extractPlugin
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
   ],
 
   devServer: {
@@ -90,8 +107,25 @@ const config = {
     open: true
   },
 
-  devtool: 'inline-source-map'
+  // devtool: 'inline-source-map',
 
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      extractComments: false,
+    }), new OptimizeCSSAssetsPlugin()],
+  },
 };
 
-module.exports = config;
+module.exports = (env, argv) => {
+
+  if (argv.mode === 'development') {
+    config.devtool = 'inline-source-map';
+  }
+
+  if (argv.mode === 'production') {
+
+  }
+
+  return config;
+};
