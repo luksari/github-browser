@@ -30,7 +30,20 @@ const config = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['env']
+            plugins: [
+              "@babel/plugin-transform-spread", 
+              "@babel/plugin-proposal-class-properties"
+            ],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    node: 'current'
+                  }
+                }
+              ],
+            ]
           }
         }
       },
