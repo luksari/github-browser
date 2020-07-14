@@ -5,12 +5,17 @@ export class EventsView {
 
   displayEvents(events) {
     this._clearContainer();
+    
     const html = this._buildHTML(events);
     if(html) {
-      $('#user-timeline').append(html);
-    }
-    
+      $('#user-timeline').removeClass('is-hidden').append(html);
+    } 
   }
+
+  hideEvents() {
+    $('#user-timeline').addClass('is-hidden');
+  }
+
   _buildHTML = (events) => {
     return events.reduce((htmlStr, curr) => {
       return htmlStr + this._renderEvent(curr);
