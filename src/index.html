@@ -22,7 +22,7 @@
 
 <nav class="navbar">
   <div class="navbar-brand">
-    <form id='gh-form' name='gh-form' class="navbar-item field is-horizontal">
+    <form id='gh-form' name='gh-form' class="navbar-item field is-horizontal" onsubmit="return false">
       <div class="field-label">
         <label class="label" for='gh-username'>Github Username</label>
       </div>
@@ -32,7 +32,7 @@
           <span id='gh-form-error' class="help is-danger"></span>
         </div>
         <div class="control">
-          <button id='gh-form-button'type="submit" class="button is-info load-username">
+          <button id='gh-form-button'type="button" class="button is-info load-username">
             Load
           </button>
         </div>

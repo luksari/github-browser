@@ -40,16 +40,17 @@ const config = {
             plugins: [
               "@babel/plugin-transform-spread", 
               "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-transform-runtime",
               "lodash"
             ],
             presets: [
               [
                 '@babel/preset-env',
                 {
-                  targets: {
-                    node: 'current'
+                  "targets": {
+                    "browsers": [ "last 1 version", "ie >= 11" ]
                   }
-                }
+              }
               ],
             ]
           }
@@ -106,7 +107,7 @@ const config = {
     open: true
   },
 
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
 
   optimization: {
     minimize: true,
@@ -116,4 +117,15 @@ const config = {
   },
 };
 
-module.exports = config;
+module.exports = (env, argv) => {
+
+  if (argv.mode === 'development') {
+    config.devtool = 'inline-source-map';
+  }
+
+  if (argv.mode === 'production') {
+
+  }
+
+  return config;
+};
